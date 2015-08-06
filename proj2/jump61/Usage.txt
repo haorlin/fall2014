@@ -1,0 +1,17 @@
+Usage: java jump61.Main [ --display ] [ --strict ] [ --stats ]
+       java jump61.Main --version
+  --display: Use GUI
+  --strict:  Exits (code 1) on any user error.
+  --stats:   Print timing statistics when using AI
+  --version: Print version number and exit.
+
+Enter java -ea jump61.Main to start a game of jump61 on the terminal.
+Enter java -ea jump61.Main --display to start a game of jump61 with a GUI.
+
+For terminal:
+    Type Help for available commands when playing the game.
+    
+For GUI:
+    Click the clear button to clear a game.
+    Click the quit button to quit the game.
+    Click square to add a spot there.
