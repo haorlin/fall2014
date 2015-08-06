@@ -1,0 +1,23 @@
+package db61b;
+import org.junit.Test;
+
+import static org.junit.Assert.*;
+
+public class TestDatabase {
+    @Test
+    public void testTable() {
+        Database b = new Database();
+        Table t = new Table(new String[] {"Username", "Level", "Rank"});
+        Table t2 = new Table(new String[] {"Mom", "Dad", "Son", "Daughter"});
+        Table t3 = new Table(new String[] {"Elementary", "Middle", "High"});
+        b.put("Maplestory",t);
+        b.put("Family",t2);
+        b.put("Schools",t3);
+        assertEquals(t2 ,b.get("Family"));
+    }
+
+    public static void main(String[] args) {
+        System.exit(ucb.junit.textui.runClasses(TestDatabase.class));
+    }
+
+}

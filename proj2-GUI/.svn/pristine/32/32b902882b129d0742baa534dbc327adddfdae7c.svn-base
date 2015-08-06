@@ -1,0 +1,12 @@
+# Tests a game in a 3x3 grid. Red should win.
+java -ea jump61.Main
+java -ea jump61.Main
+===#1===
+auto Red
+manual Blue
+start
+%mr
+%ib...
+===#2===
+start
+%ir...

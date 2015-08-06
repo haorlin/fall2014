@@ -1,0 +1,227 @@
+package graph;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+
+/** A partial implementation of Graph containing elements common to
+ *  directed and undirected graphs.
+ *
+ *  @author Hao Ran Raymond Lin
+ */
+abstract class GraphObj extends Graph {
+
+    /** A new, empty Graph. */
+    GraphObj() {
+        graphList = new HashMap<Integer, ArrayList<Integer>>();
+        predecessors = new HashMap<Integer, ArrayList<Integer>>();
+    }
+
+    @Override
+    public int vertexSize() {
+        int numVertices = 0;
+        for (int vertex : graphList.keySet()) {
+            numVertices++;
+        }
+        return numVertices;
+    }
+
+    @Override
+    public int maxVertex() {
+        int maxVertex = 0;
+        for (int vertex : graphList.keySet()) {
+            if (vertex > maxVertex) {
+                maxVertex = vertex;
+            }
+        }
+        return maxVertex;
+    }
+
+    @Override
+    public int edgeSize() {
+        int numEdges = 0;
+        int selfEdges = 0;
+        for (int vertex : graphList.keySet()) {
+            for (int i = 0; i < graphList.get(vertex).size(); i++) {
+                if (vertex == graphList.get(vertex).get(i)) {
+                    selfEdges += 1;
+                }
+                numEdges += 1;
+            }
+        }
+        if (isDirected()) {
+            return numEdges;
+        } else {
+            return (numEdges + selfEdges) / 2;
+        }
+    }
+
+    @Override
+    public abstract boolean isDirected();
+
+    @Override
+    public int outDegree(int v) {
+        if (graphList.get(v) == null) {
+            return 0;
+        } else {
+            return graphList.get(v).size();
+        }
+    }
+
+    @Override
+    public abstract int inDegree(int v);
+
+    @Override
+    public boolean contains(int u) {
+        return graphList.containsKey(u);
+    }
+
+    @Override
+    public boolean contains(int u, int v) {
+        if (graphList.containsKey(u) && graphList.get(u).contains(v)) {
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public int add() {
+        for (int i = 1; i < graphList.size() + 2; i++) {
+            if (!graphList.containsKey(i)) {
+                graphList.put(i, new ArrayList<Integer>());
+                predecessors.put(i, new ArrayList<Integer>());
+                return i;
+            }
+        }
+        return 0;
+    }
+
+    @Override
+    public int add(int u, int v) {
+        if (!contains(u, v)) {
+            graphList.get(u).add(v);
+            predecessors.get(v).add(u);
+            if (!isDirected() && u != v) {
+                graphList.get(v).add(u);
+            }
+        }
+        return u;
+    }
+
+    @Override
+    public void remove(int v) {
+        if (graphList.containsKey(v)) {
+            for (int vertex : graphList.keySet()) {
+                remove(vertex, v);
+                remove(v, vertex);
+            }
+        }
+        graphList.remove(v);
+        predecessors.remove(v);
+    }
+
+    @Override
+    public void remove(int u, int v) {
+        if (graphList.containsKey(u) && graphList.containsKey(v)) {
+            graphList.get(u).remove((Integer) v);
+            predecessors.get(v).remove((Integer) u);
+            if (!isDirected()) {
+                graphList.get(v).remove((Integer) u);
+                predecessors.get(u).remove((Integer) v);
+            }
+        }
+    }
+
+    @Override
+    public Iteration<Integer> vertices() {
+        return Iteration.iteration(graphList.keySet());
+    }
+
+    @Override
+    public int successor(int v, int k) {
+        if (!graphList.containsKey(v) || k >= graphList.get(v).size()) {
+            return 0;
+        }
+        return graphList.get(v).get(k);
+    }
+
+    @Override
+    public abstract int predecessor(int v, int k);
+
+    @Override
+    public Iteration<Integer> successors(int v) {
+        if (!graphList.containsKey(v)) {
+            ArrayList<Integer> emptyList = new ArrayList<Integer>();
+            return Iteration.iteration(emptyList.iterator());
+        }
+        return Iteration.iteration(graphList.get(v).iterator());
+    }
+
+    @Override
+    public abstract Iteration<Integer> predecessors(int v);
+
+    @Override
+    public Iteration<int[]> edges() {
+        ArrayList<int[]> edges = new ArrayList<int[]>();
+        for (int vertex : graphList.keySet()) {
+            for (int i = 0; i < graphList.get(vertex).size(); i++) {
+                if (isDirected()) {
+                    int[] data = {vertex, graphList.get(vertex).get(i)};
+                    edges.add(data);
+                } else {
+                    if (!(contains(vertex, graphList.get(vertex).get(i))
+                            && contains(graphList.get(vertex).get(i), vertex)
+                            && vertex > graphList.get(vertex).get(i))) {
+                        int[] data = {vertex, graphList.get(vertex).get(i)};
+                        edges.add(data);
+                    }
+                }
+            }
+        }
+        return Iteration.iteration(edges.iterator());
+    }
+
+    @Override
+    protected boolean mine(int v) {
+        return contains(v);
+    }
+
+    @Override
+    protected void checkMyVertex(int v) {
+        if (!graphList.containsKey(v)) {
+            throw new NullPointerException("Vertex V does not exist");
+        }
+    }
+
+    @Override
+    protected int edgeId(int u, int v) {
+        if (!contains(u, v)) {
+            return 0;
+        }
+        if (isDirected()) {
+            return (u + v) * (u + v +1) / 2 + v;
+        } else {
+            return u * u + v * v;
+        }
+    }
+
+    /**
+     * Getter method that returns a hashmap of successors.
+     * @return A HashMap of vertices and their successors.
+     */
+    public HashMap<Integer, ArrayList<Integer>> getGraph() {
+        return graphList;
+    }
+
+    /**
+     * Getter method that returns a hashmap of predecessors.
+     * @return A HashMap of vertices of their predecessors.
+     */
+    public HashMap<Integer, ArrayList<Integer>> getPredecessors() {
+        return predecessors;
+    }
+
+    /** Mapping of vertices to their successors. */
+    private HashMap<Integer, ArrayList<Integer>> graphList;
+    /** Mapping of vertices to their predecessors. */
+    private HashMap<Integer, ArrayList<Integer>> predecessors;
+}

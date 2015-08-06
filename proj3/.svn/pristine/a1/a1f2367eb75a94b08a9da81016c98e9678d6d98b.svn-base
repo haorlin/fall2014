@@ -1,0 +1,118 @@
+package graph;
+import java.util.ArrayList;
+import java.util.List;
+
+import org.junit.Test;
+
+import static org.junit.Assert.*;
+
+
+public class PathsTesting {
+    class GraphPaths extends SimpleShortestPaths {
+
+        public GraphPaths(Graph G, int source, int dest) {
+            super(G, source, dest);
+        }
+
+        @Override
+        public double getWeight(int u, int v) {
+            if (u == 2 && v == 3) {
+                return 6.5;
+            } else if (u == 4) {
+                if (v == 2) {
+                    return 12.2;
+                } else if (v == 3) {
+                    return 102.0;
+                } else if (v == 5) {
+                    return 11.2;
+                }
+            } else if (u == 5) {
+                if (v == 3) {
+                    return 9.1;
+                } else if (v == 6) {
+                    return 30.0;
+                }
+            } else if (u == 6) {
+                if (v == 7) {
+                    return 100000000000000.0;
+                }
+            }
+            return Double.POSITIVE_INFINITY;
+        }
+
+        @Override
+        protected double estimatedDistance(int v) {
+            edused = true;
+            switch (v) {
+            case 4:
+                return 102.0;
+            case 2:
+                return 4.0;
+            case 5:
+                return 5.1;
+            case 6:
+                return 40.0;
+            case 7:
+                return 50000000000.2;
+            default:
+                return 0.0;
+            }
+        }
+    }
+
+    @Test
+    public void testWeights() {
+        DirectedGraph g = new DirectedGraph();
+        g.add();
+        g.add();
+        g.add();
+        g.add();
+        g.add();
+        g.add();
+        g.add();
+        g.add(2, 3);
+        g.add(4, 2);
+        g.add(4, 3);
+        g.add(4, 5);
+        g.add(5, 3);
+        g.add(5, 6);
+        g.add(6, 7);
+        GraphPaths gp =  new GraphPaths(g, 4, 3);
+        gp.setPaths();
+        assertEquals(102.0, gp.getWeight(4, 3), 0.01);
+        assertEquals(30.0, gp.getWeight(5, 6), 0.01);
+        assertEquals(4, gp.getPredecessor(5));
+        assertEquals(2, gp.getPredecessor(3));
+        assertEquals(Double.POSITIVE_INFINITY, gp.getWeight(7), 0.01);
+        assertTrue(edused);
+        List<Integer> expected = new ArrayList<Integer>();
+        expected.add(4);
+        expected.add(2);
+        expected.add(3);
+        List<Integer> actual = gp.pathTo(3);
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    public void testWeights2() {
+        DirectedGraph g = new DirectedGraph();
+        g.add();
+        g.add();
+        g.add();
+        g.add();
+        g.add();
+        g.add();
+        g.add(2, 3);
+        g.add(4, 2);
+        g.add(4, 3);
+        g.add(4, 5);
+        g.add(5, 3);
+        g.add(5, 6);
+        GraphPaths gp =  new GraphPaths(g, 4, 3);
+        gp.setWeight(3, 10);
+        assertEquals(10, gp.getWeight(3), 0.01);
+    }
+
+    /** Check if estimatedDistance is called. */
+    private boolean edused = false;
+}

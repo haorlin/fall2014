@@ -1,0 +1,57 @@
+package graph;
+
+import java.util.Hashtable;
+
+/* See restrictions in Graph.java. */
+
+/** A partial implementation of ShortestPaths that contains the weights of
+ *  the vertices and the predecessor edges.   The client needs to
+ *  supply only the two-argument getWeight method.
+ *  @author Hao Ran Raymond Lin
+ */
+public abstract class SimpleShortestPaths extends ShortestPaths {
+
+    /** The shortest paths in G from SOURCE. */
+    public SimpleShortestPaths(Graph G, int source) {
+        this(G, source, 0);
+    }
+
+    /** A shortest path in G from SOURCE to DEST. */
+    public SimpleShortestPaths(Graph G, int source, int dest) {
+        super(G, source, dest);
+    }
+
+    @Override
+    public double getWeight(int v) {
+        if (!weightTable.containsKey(v)) {
+            return Double.POSITIVE_INFINITY;
+        }
+        return weightTable.get(v);
+    }
+
+    @Override
+    protected void setWeight(int v, double w) {
+        weightTable.put(v, w);
+    }
+
+    @Override
+    public int getPredecessor(int v) {
+        if (!predecessorTable.containsKey(v)
+                || (predecessorTable.get(v) == -1)) {
+            return 0;
+        }
+        return predecessorTable.get(v);
+    }
+
+    @Override
+    protected void setPredecessor(int v, int u) {
+        predecessorTable.put(v, u);
+    }
+
+    /** Mapping of vertices to their weights.*/
+    private Hashtable<Integer, Double> weightTable
+        = new Hashtable<Integer, Double>();
+    /** Mapping of vertices names to their predecessors.*/
+    private Hashtable<Integer, Integer> predecessorTable
+        = new Hashtable<Integer, Integer>();
+}

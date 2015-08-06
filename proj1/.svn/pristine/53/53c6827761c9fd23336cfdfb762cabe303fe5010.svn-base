@@ -1,0 +1,27 @@
+DB61B System.  Version 1.0
+Loaded students.db
+Loaded enrolled.db
+Loaded schedule.db
+Loaded enrolled2.db
+Search results:
+  Valerie
+  Jason
+Search results:
+  Jason Knowles
+Search results:
+  21005 
+  21228 
+  21229 
+  21232 
+  21105 
+  21231 
+  21103 
+  21001 
+Search results:
+ 101 21232 A- 61B EECS 1-2MWF 2050 VLSB S 2004
+ 101 21105 B+ 54 Math 1-2MWF 1 Pimentel S 2004
+ 101 21228 B 61A EECS 2-3MWF 1 Pimentel F 2003
+ 101 21001 B 1A English 9-10MWF 2301 Tolman F 2003
+Search results:
+ 101 21232 A- 61B EECS 1-2MWF 2050 VLSB S 2004
+ 101 21228 B 61A EECS 2-3MWF 1 Pimentel F 2003

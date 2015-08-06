@@ -1,0 +1,143 @@
+package graph;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
+import org.junit.Test;
+
+import static org.junit.Assert.*;
+
+/** Unit tests for the Graph class.
+ *  @author Hao Ran Raymond Lin
+ */
+public class GraphTesting {
+
+    // Add tests.  Here's a sample.
+    @Test
+    public void emptyGraph() {
+        UndirectedGraph g = new UndirectedGraph();
+        assertEquals("Initial graph has vertices", 0, g.vertexSize());
+    }
+    
+    @Test
+    public void directedGraph() {
+        DirectedGraph g = new DirectedGraph();
+        g.add();
+        g.add();
+        assertEquals(2, g.vertexSize());
+        g.add();
+        assertEquals(3, g.maxVertex());
+        assertEquals(false, g.contains(4));
+        assertEquals(true, g.contains(2));
+        g.add(1, 2);
+        g.add(2, 3);
+        assertEquals(1, g.predecessor(2, 0));
+        assertEquals(2, g.edgeSize());
+        g.add(1,3);
+        assertEquals(2, g.inDegree(3));
+        assertEquals(3, g.edgeSize());
+        assertEquals(true, g.contains(1, 3));
+        assertEquals(false, g.contains(2, 1));
+        assertEquals(2, g.outDegree(1));
+        assertEquals(2, g.successor(1, 0));
+        assertEquals(3, g.successor(1, 1));
+        g.remove(1);
+        assertEquals(false, g.contains(1));
+        assertEquals(2, g.vertexSize());
+        assertEquals(1, g.edgeSize());
+        g.add();
+        assertEquals(true, g.contains(1));
+        
+        DirectedGraph p = new DirectedGraph();
+        p.add();
+        p.add();
+        p.add();
+        p.add();
+        p.add(2, 1);
+        p.add(3, 1);
+        p.add(4, 1);
+        
+        ArrayList<Integer> output = new ArrayList<>();
+        for (int node : p.predecessors(1)) {
+            output.add(node);
+        }
+        List<Integer> expected = Arrays.asList(2, 3, 4);
+        assertTrue(output.equals(expected));
+        
+        DirectedGraph q = new DirectedGraph();
+        q.add();
+        q.add();
+        q.add();
+        q.add(2, 3);
+        q.add(1, 3);
+        q.remove(2);
+        ArrayList<Integer> output2 = new ArrayList<>();
+        for (int node : q.predecessors(3)) {
+            output2.add(node);
+        }
+        List<Integer> expected2 = Arrays.asList(1);
+        assertTrue(output2.equals(expected2));
+    }
+    
+
+    @Test
+    public void undirectedGraph() {
+        UndirectedGraph g = new UndirectedGraph();
+        g.add();
+        g.add();
+        g.add(1, 2);
+        assertEquals(1, g.edgeSize());
+        assertEquals(2, g.successor(1, 0));
+        assertEquals(2, g.predecessor(1, 0));
+        g.add();
+        g.add();
+        g.add(1, 3);
+        g.add(1, 4);
+        
+        ArrayList<Integer> output = new ArrayList<>();
+        for (int node : g.successors(1)) {
+            output.add(node);
+        }
+        List<Integer> expected = Arrays.asList(2, 3, 4);
+        assertTrue(output.equals(expected)); 
+        
+        g.remove(1, 4);
+        assertFalse(g.contains(1, 4));
+        assertFalse(g.contains(4, 1));
+        
+        UndirectedGraph p = new UndirectedGraph();
+        p.add();
+        p.add();
+        p.add();
+        p.add();
+        p.add(2, 1);
+        p.add(3, 1);
+        p.add(4, 1);
+        p.add(2, 3);
+        p.remove(1);
+        assertEquals(1, p.edgeSize());
+        
+        UndirectedGraph q = new UndirectedGraph();
+        q.add();
+        q.add();
+        q.add();
+        q.add();
+        q.add();
+        q.add();
+        q.add();
+        q.add();
+        q.add(1, 8);
+        q.add(1, 1);
+        q.add(1, 2);
+        q.add(1, 3);
+        q.add(1, 4);
+        
+        ArrayList<Integer> output2 = new ArrayList<>();
+        for (int node : q.successors(1)) {
+            output2.add(node);
+        }
+        List<Integer> expected2 = Arrays.asList(8, 1, 2, 3, 4);
+        assertTrue(output2.equals(expected2)); 
+    }
+}

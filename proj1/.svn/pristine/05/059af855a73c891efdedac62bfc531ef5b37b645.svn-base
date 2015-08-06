@@ -1,0 +1,8 @@
+load students;
+load enrolled;
+load schedule;
+load enrolled2;
+
+select Firstname from students, enrolled2 
+		where SID <= '103';
+quit;

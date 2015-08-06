@@ -1,0 +1,12 @@
+load students;
+load enrolled;
+load schedule;
+
+select CCN from enrolled;
+select SID, Firstname from students
+     where Lastname = 'Chan';
+select Firstname, Lastname
+         from students where SID >= '103';
+select Firstname, Lastname
+         from students where SemEnter > 'F' and SID > '103';
+quit;

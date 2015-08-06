@@ -1,0 +1,44 @@
+package db61b;
+import java.util.ArrayList;
+import java.util.List;
+
+import org.junit.Test;
+
+import static org.junit.Assert.*;
+
+public class TestTable {
+
+    @Test
+    public void testTable() {
+        Row r = new Row(new String[] {"Sushi", "28", "392"});
+        Row r2 = new Row(new String[] {"Frank", "30", "213"});
+        Row r3 = new Row(new String[] {"Fangblade", "200", "1"});
+        Table t = new Table(new String[] {"Username", "Level", "Rank"});
+        t.add(r);
+        t.add(r2);
+        t.add(r3);
+        assertEquals(3, t.columns());
+        assertEquals(1, t.findColumn("Level")); 
+        assertEquals(-1, t.findColumn("Weed"));
+        assertEquals(3, t.size());
+        t.print();
+        Table t2 = Table.readTable("enrolled");
+        t2.print();
+        t.writeTable("Testing");
+    }
+    
+    @Test
+    public void testTableWithColumn() {
+        Table t = Table.readTable("students");
+        Column c = new Column("Lastname", t);
+        Column c2 = new Column("Firstname", t);
+        List<Column> cols = new ArrayList<Column>();
+        cols.add(c);
+        cols.add(c2);
+        //Row r = new Row(cols, t.get(0));
+    }
+
+    public static void main(String[] args) {
+        System.exit(ucb.junit.textui.runClasses(TestTable.class));
+    }
+}

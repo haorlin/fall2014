@@ -1,0 +1,28 @@
+package db61b;
+import org.junit.Test;
+
+import static org.junit.Assert.*;
+
+public class TestCondition {
+    @Test
+    public void testTable() {
+        Row r = new Row(new String[] {"Sushi", "28", "392"});
+        Row r2 = new Row(new String[] {"Frank", "30", "213"});
+        Row r3 = new Row(new String[] {"Fangblade", "200", "1"});
+        Table t = new Table(new String[] {"Username", "Level", "Rank"});
+        Column c = new Column("Level", t);
+        Column c2 = new Column("Rank", t);
+        Condition cond = new Condition(c, ">", c2);
+        Condition cond2 = new Condition(c, "=", c2);
+        Condition cond3 = new Condition(c, "<", c2);
+        
+        assertEquals(false, cond.test(r, r2, r3));
+        assertEquals(false, cond2.test(r, r2, r3));
+        assertEquals(true, cond3.test(r, r2, r3));
+    }
+
+    public static void main(String[] args) {
+        System.exit(ucb.junit.textui.runClasses(TestCondition.class));
+    }
+
+}

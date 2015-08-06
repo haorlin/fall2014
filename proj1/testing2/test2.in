@@ -1,0 +1,18 @@
+load students;
+load enrolled;
+load schedule;
+load enrolled2;
+
+select Firstname from students, enrolled2 
+		where SID <= '103';
+select Firstname, Lastname from students, enrolled2
+		where SID <= '103' and Major = 'EECS';
+select CCN 
+		from enrolled, students;
+select SID, CCN, Grade, Num, Dept, Time, Room, Sem, Year 
+		from enrolled, schedule
+		where SID = '101';
+select SID, CCN, Grade, Num, Dept, Time, Room, Sem, Year 
+		from enrolled, schedule
+		where SID = '101' and Dept = 'EECS';
+quit;

@@ -1,0 +1,22 @@
+package db61b;
+import org.junit.Test;
+import static org.junit.Assert.*;
+
+public class TestRow {
+
+    @Test
+    public void testRow() {
+        Row r = new Row(new String[] {"Rompers", "on", "3"});
+        Row r2 = new Row(new String[] {"Rompers", "on", "3"});
+        Row r3 = new Row(new String[] {"Rompers", "onn", "3"});
+        assertEquals(3, r.size());
+        assertEquals("Rompers", r.get(0));
+        assertEquals("3", r.get(2));
+        assertEquals(true, r.equals(r2));
+        assertEquals(false, r.equals(r3));
+    }
+    
+    public static void main(String[] args) {
+        System.exit(ucb.junit.textui.runClasses(TestRow.class));
+    }
+}
